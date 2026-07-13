@@ -99,7 +99,7 @@ do
   vim.g.maplocalleader = ' '
 
   -- Set to true if you have a Nerd Font installed and selected in the terminal
-  vim.g.have_nerd_font = false
+  vim.g.have_nerd_font = true
 
   -- [[ Setting options ]]
   --  See `:help vim.o`
@@ -107,8 +107,8 @@ do
   --  For more options, you can see `:help option-list`
 
   -- Make line numbers default
-  vim.o.number = true
-  -- You can also add relative line numbers, to help with jumping.
+  vim.o.number = true          -- já existe no kickstart
+  vim.o.relativenumber = true  -- adiciona esta  -- You can also add relative line numbers, to help with jumping.
   --  Experiment for yourself to see if you like it!
   -- vim.o.relativenumber = true
 
@@ -383,8 +383,9 @@ do
   --
   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
 vim.pack.add { gh 'ellisonleao/gruvbox.nvim' }
-  require('gruvbox').setup {
-    transparent_mode = true, -- vaza Normal/NormalFloat/SignColumn pro wallpaper
+---@diagnostic disable-next-line: missing-fields
+require('gruvbox').setup {
+      transparent_mode = true, -- vaza Normal/NormalFloat/SignColumn pro wallpaper
     italic = {
       comments = false, -- mantém comentários sem itálico, como você já fazia
     },
@@ -395,6 +396,8 @@ vim.pack.add { gh 'ellisonleao/gruvbox.nvim' }
       NormalFloat = { bg = 'NONE' }, -- janelas flutuantes (lazy, mason, lsp hover)
       SignColumn  = { bg = 'NONE' },
       EndOfBuffer = { bg = 'NONE' }, -- área dos ~ abaixo do texto
+      CursorLine  = { bg = 'NONE' },
+      CursorLineNr = { fg = '#fe8019', bold = true },
     },
   }
   vim.o.background = 'dark' -- gruvbox tem variante light; fixa a dark
@@ -773,6 +776,12 @@ do
     vim.lsp.config(name, server)
     vim.lsp.enable(name)
   end
+  
+  -- rust-analyzer vem do rustup (`rustup component add rust-analyzer`),
+  -- de propósito fora da tabela `servers` — senão o mason-tool-installer
+  -- baixaria um segundo binário e daria conflito de versão.
+  vim.lsp.enable 'rust_analyzer'
+  
 end
 
 -- ============================================================
@@ -801,7 +810,7 @@ do
     },
     -- You can also specify external formatters in here.
     formatters_by_ft = {
-      -- rust = { 'rustfmt' },
+      rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
       --
