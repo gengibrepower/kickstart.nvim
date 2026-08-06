@@ -109,6 +109,7 @@ do
   -- Make line numbers default
   vim.o.number = true          -- já existe no kickstart
   vim.o.relativenumber = true  -- adiciona esta  -- You can also add relative line numbers, to help with jumping.
+  vim.o.undofile = true
   --  Experiment for yourself to see if you like it!
   -- vim.o.relativenumber = true
 
@@ -387,6 +388,7 @@ vim.pack.add { gh 'ellisonleao/gruvbox.nvim' }
 require('gruvbox').setup {
       transparent_mode = true, -- vaza Normal/NormalFloat/SignColumn pro wallpaper
     italic = {
+      strings = false,
       comments = false, -- mantém comentários sem itálico, como você já fazia
     },
     overrides = {
@@ -410,6 +412,9 @@ require('gruvbox').setup {
   -- [[ mini.nvim ]]
   --  A collection of various small independent plugins/modules
   vim.pack.add { gh 'nvim-mini/mini.nvim' }
+
+  vim.pack.add { gh 'mbbill/undotree' }
+  vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { desc = 'Toggle [U]ndotree' })
 
   -- If a nerd font is available, load the icons module for pretty icons in various plugins.
   if vim.g.have_nerd_font then
@@ -711,7 +716,6 @@ do
     -- But for many setups, the LSP (`ts_ls`) will work just fine
     -- ts_ls = {},
 
-        jdtls = {},
 
     -- Special Lua Config, as recommended by neovim help docs
     lua_ls = {
@@ -781,6 +785,7 @@ do
   -- de propósito fora da tabela `servers` — senão o mason-tool-installer
   -- baixaria um segundo binário e daria conflito de versão.
   vim.lsp.enable 'rust_analyzer'
+  vim.lsp.enable 'jdtls'
   
 end
 
