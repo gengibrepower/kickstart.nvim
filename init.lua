@@ -786,7 +786,14 @@ do
   -- baixaria um segundo binário e daria conflito de versão.
   vim.lsp.enable 'rust_analyzer'
   vim.lsp.enable 'jdtls'
-  
+  vim.lsp.enable({
+  'ts_ls',
+  'html',
+  'cssls',
+  'jsonls',
+  'emmet_language_server',
+  'eslint', -- só ativa de fato se o projeto tiver config de eslint
+  })
 end
 
 -- ============================================================
@@ -796,6 +803,9 @@ end
 do
   -- [[ Formatting ]]
   vim.pack.add { gh 'stevearc/conform.nvim' }
+
+ local prettier = { 'prettierd', 'prettier', stop_after_first = true }
+
   require('conform').setup {
     notify_on_error = false,
     format_on_save = function(bufnr)
@@ -816,6 +826,13 @@ do
     -- You can also specify external formatters in here.
     formatters_by_ft = {
       rust = { 'rustfmt' },
+      javascript = prettier,
+      typescript = prettier,
+      javascriptreact = prettier,
+      typescriptreact = prettier,
+      html = prettier,
+      css = prettier,
+      json = prettier,
       -- Conform can also run multiple formatters sequentially
       -- python = { "isort", "black" },
       --
@@ -921,6 +938,8 @@ do
 
   -- NOTE: You can also specify a branch or a specific commit
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
+
+  local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'css', 'json' }
 
   -- Ensure basic parsers are installed
   local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
