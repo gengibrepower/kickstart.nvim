@@ -785,7 +785,6 @@ do
   -- rust-analyzer vem do rustup (`rustup component add rust-analyzer`),
   -- de propósito fora da tabela `servers` — senão o mason-tool-installer
   -- baixaria um segundo binário e daria conflito de versão.
-  vim.lsp.enable 'rust_analyzer'
   vim.lsp.enable 'jdtls'
   vim.lsp.enable 'rust_analyzer'
 
