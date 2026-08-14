@@ -15,7 +15,7 @@
 ========         `"")----------------(""`   ___________      ========
 ========        /::::::::::|  |::::::::::\  \ no mouse \     ========
 ========       /:::========|  |==hjkl==:::\  \ required \    ========
-========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
+========      '""""""""""""'  '""""""""""""'  '"""x"""""""'   ========
 ========                                                     ========
 =====================================================================
 =====================================================================
@@ -707,15 +707,13 @@ do
   local servers = {
     -- clangd = {},
     -- gopls = {},
-    -- pyright = {},
     -- rust_analyzer = {},
-    --
-    -- Some languages (like typescript) have entire language plugins that can be useful:
-    --    https://github.com/pmizio/typescript-tools.nvim
-    --
-    -- But for many setups, the LSP (`ts_ls`) will work just fine
-    -- ts_ls = {},
-
+    html = {},
+    cssls = {},
+    jsonls = {},
+    emmet_language_server = {},
+    eslint = {},
+    jdtls = {},
 
     -- Special Lua Config, as recommended by neovim help docs
     lua_ls = {
@@ -789,14 +787,19 @@ do
   -- baixaria um segundo binário e daria conflito de versão.
   vim.lsp.enable 'rust_analyzer'
   vim.lsp.enable 'jdtls'
-  vim.lsp.enable({
-  'ts_ls',
-  'html',
-  'cssls',
-  'jsonls',
-  'emmet_language_server',
-  'eslint', -- só ativa de fato se o projeto tiver config de eslint
+  vim.lsp.enable 'rust_analyzer'
+
+
+  vim.lsp.config('pyright', {
+    settings = {
+      python = { analysis = { typeCheckingMode = 'basic' } },
+    },
   })
+  vim.lsp.enable({ 'pyright', 'ruff' })
+
+  vim.pack.add { gh 'pmizio/typescript-tools.nvim' }
+  require('typescript-tools').setup {}
+  
 end
 
 -- ============================================================
@@ -836,8 +839,7 @@ do
       html = prettier,
       css = prettier,
       json = prettier,
-      -- Conform can also run multiple formatters sequentially
-      -- python = { "isort", "black" },
+      python = { 'ruff_organize_imports', 'ruff_format' },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
